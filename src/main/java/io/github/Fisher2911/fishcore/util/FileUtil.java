@@ -119,7 +119,7 @@ public class FileUtil {
      *
      * @param section Section that enchantments are loaded from
      * @param fileName name of file section is in
-     * @return Map<Enchantment, Integer> of enchantments
+     * @return Map of enchantments and their levels
      */
 
     public static Map<Enchantment, Integer> loadItemStackEnchantments(final ConfigurationSection section, final String fileName) {
