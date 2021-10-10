@@ -22,35 +22,55 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore;
+package io.github.Fisher2911.fishcore.user;
 
-import io.github.Fisher2911.fishcore.logger.Logger;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-public class FishCore extends JavaPlugin {
+public class UserManager<T extends BaseUser> {
 
-    private Logger logger;
+    private final Map<UUID, T> userMap = new HashMap<>();
 
-    @Override
-    public void onEnable() {
-        this.initClasses();
+
+    /**
+     *
+     * @param baseUser BaseUser to be added
+     */
+    public void addUser(final T baseUser) {
+        this.userMap.put(baseUser.getUuid(), baseUser);
     }
 
-    @Override
-    public void onDisable() {
+    /**
+     *
+     * @param uuid BaseUser's uuid
+     * @return Optional BaseUser
+     */
 
+    public Optional<T> removeUser(final UUID uuid) {
+        return Optional.ofNullable(this.userMap.remove(uuid));
     }
 
-    private void initClasses() {
-        this.logger = new Logger(this);
+    /**
+     *
+     * @param uuid BaseUser's uuid
+     * @return Optional BaseUser
+     */
+
+    public Optional<T> getUser(final UUID uuid) {
+        return Optional.ofNullable(this.userMap.get(uuid));
     }
 
-    public Logger logger() {
-        return this.logger;
+    /**
+     *
+     * @return all loaded BaseUsers
+     */
+
+    public Collection<T> getAllUsers() {
+        return this.userMap.values();
     }
 
-    public void registerListener(final Listener listener) {
-        this.getServer().getPluginManager().registerEvents(listener, this);
-    }
+
 }

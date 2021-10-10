@@ -28,9 +28,12 @@ import io.github.Fisher2911.fishcore.FishCore;
 import io.github.Fisher2911.fishcore.logger.Logger;
 import io.github.Fisher2911.fishcore.message.ErrorMessages;
 import io.github.Fisher2911.fishcore.util.builder.ItemBuilder;
+import io.github.Fisher2911.fishcore.util.builder.SkullBuilder;
 import io.github.Fisher2911.fishcore.util.helper.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -102,8 +105,25 @@ public class FileUtil {
                 filter(itemFlag -> itemFlag != null).
                 collect(Collectors.toSet());
 
-        return ItemBuilder.
-                from(material).
+        final ItemBuilder itemBuilder;
+
+        if (material == Material.PLAYER_HEAD) {
+            final String texture = section.getString("texture");
+            final String ownerName = section.getString("owner");
+            itemBuilder = SkullBuilder.
+                    create();
+
+            if (texture != null) {
+                ((SkullBuilder) itemBuilder).texture(texture);
+            } else if (ownerName != null) {
+                final OfflinePlayer player = Bukkit.getOfflinePlayer(ownerName);
+                ((SkullBuilder) itemBuilder).owner(player);
+            }
+        } else {
+            itemBuilder = ItemBuilder.from(material);
+        }
+
+        return itemBuilder.
                 amount(amount).
                 name(name).
                 unbreakable(unbreakable).

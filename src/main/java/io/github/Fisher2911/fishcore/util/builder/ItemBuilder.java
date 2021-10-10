@@ -37,18 +37,28 @@ import java.util.Set;
 
 public class ItemBuilder {
 
-    private Material material;
-    private int amount;
-    private ItemMeta itemMeta;
+    protected Material material;
+    protected int amount;
+    protected ItemMeta itemMeta;
 
     /**
      *
      * @param material builder material
      */
 
-    private ItemBuilder(final Material material) {
+    ItemBuilder(final Material material) {
         this.material = material;
         this.itemMeta = Bukkit.getItemFactory().getItemMeta(material);
+    }
+
+    /**
+     *
+     * @param itemStack builder ItemStack
+     */
+
+    ItemBuilder(final ItemStack itemStack) {
+        this.material = itemStack.getType();
+        this.itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(this.material);
     }
 
     /**
@@ -59,6 +69,16 @@ public class ItemBuilder {
 
     public static ItemBuilder from(final Material material) {
         return new ItemBuilder(material);
+    }
+
+    /**
+     *
+     * @param itemStack builder ItemStack
+     * @return
+     */
+
+    public static ItemBuilder from(final ItemStack itemStack) {
+        return new ItemBuilder(itemStack);
     }
 
     /**
