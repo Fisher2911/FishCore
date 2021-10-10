@@ -25,6 +25,7 @@
 plugins {
     id 'java-library'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'signing'
     id 'maven-publish'
 }
 
@@ -62,11 +63,141 @@ test {
 }
 
 shadowJar {
-    relocate 'co.aikar.taskchain', 'me.fisher2911.hmcutils.taskchain'
+    relocate 'co.aikar.taskchain', 'io.github.fisher2911.hmcutils.taskchain'
 }
 
 shadowJar {
     archiveBaseName.set('FishCore')
     archiveClassifier.set('')
     archiveVersion.set('')
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId 'io.github.Fisher2911'
+            artifactId 'FishCore'
+            version '1.0.0'
+
+            from components.java
+
+            // create the sign pom artifact
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
+
+            // create the signed artifacts
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
+                    }
+                    extension = 'jar.asc'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies (no need in maven central POMs)
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        // add all items necessary for maven central publication
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'Serialize and Deserialize Json-LD into Java entities'
+            name 'FishCore'
+            url 'https://github.com/Fisher2911/FishCore'
+            organization {
+                name 'io.github.Fisher2911'
+                url 'https://github.com/Fisher2911/FishCore'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/Fisher2911/FishCore'
+            }
+            licenses {
+                license {
+                    name 'MIT License'
+                    url 'https://github.com/Fisher2911/FishCore/blob/master/LICENSE.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/Fisher2911/FishCore'
+                connection 'scm:git:git://github.com/Fisher2911/FishCore.git'
+                developerConnection 'scm:git:ssh://git@github.com:Fisher2911/FishCore.git'
+            }
+            developers {
+                developer {
+                    name 'Fisher2911'
+                }
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenJavaPublication {
+        destination = file("$buildDir/generated-pom.xml")
+    }
+    tasks.publishMavenJavaPublicationToMavenLocal {
+        dependsOn project.tasks.signArchives
+    }
+    tasks.publishMavenJavaPublicationToMavenRepository {
+        dependsOn project.tasks.signArchives
+    }
 }
