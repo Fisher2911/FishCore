@@ -1,10 +1,10 @@
-package me.fisher2911.fishcore.util;
+package io.github.Fisher2911.fishcore.util;
 
-import me.fisher2911.fishcore.FishCore;
-import me.fisher2911.fishcore.logger.Logger;
-import me.fisher2911.fishcore.message.ErrorMessages;
-import me.fisher2911.fishcore.util.builder.ItemBuilder;
-import me.fisher2911.fishcore.util.helper.Utils;
+import io.github.Fisher2911.fishcore.FishCore;
+import io.github.Fisher2911.fishcore.logger.Logger;
+import io.github.Fisher2911.fishcore.message.ErrorMessages;
+import io.github.Fisher2911.fishcore.util.builder.ItemBuilder;
+import io.github.Fisher2911.fishcore.util.helper.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;

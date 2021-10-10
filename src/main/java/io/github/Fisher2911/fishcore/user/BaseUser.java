@@ -1,4 +1,4 @@
-package me.fisher2911.fishcore.user;
+package io.github.Fisher2911.fishcore.user;
 
 import java.util.UUID;
 

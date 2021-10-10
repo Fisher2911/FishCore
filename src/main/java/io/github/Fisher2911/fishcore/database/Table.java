@@ -1,4 +1,4 @@
-package me.fisher2911.fishcore.database;
+package io.github.Fisher2911.fishcore.database;
 
 public class Table {
 

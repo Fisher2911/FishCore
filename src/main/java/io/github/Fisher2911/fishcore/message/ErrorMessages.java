@@ -1,4 +1,4 @@
-package me.fisher2911.fishcore.message;
+package io.github.Fisher2911.fishcore.message;
 
 public class ErrorMessages {
 

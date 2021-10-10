@@ -1,6 +1,6 @@
-package me.fisher2911.fishcore.logger;
+package io.github.Fisher2911.fishcore.logger;
 
-import me.fisher2911.fishcore.FishCore;
+import io.github.Fisher2911.fishcore.FishCore;
 
 import java.util.logging.Level;
 

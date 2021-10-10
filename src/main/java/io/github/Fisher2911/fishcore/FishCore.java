@@ -1,6 +1,6 @@
-package me.fisher2911.fishcore;
+package io.github.Fisher2911.fishcore;
 
-import me.fisher2911.fishcore.logger.Logger;
+import io.github.Fisher2911.fishcore.logger.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FishCore extends JavaPlugin {
