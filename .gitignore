@@ -2,4 +2,3 @@
 /.gradle/
 /gradle.properties/
 /secret-keys.gpg/
-/.gitignore/
