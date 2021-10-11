@@ -33,11 +33,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
+import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,14 +90,71 @@ public class MessageHandler {
 
     /**
      *
-     * @param sender audience message is sent to
+     * @param sender receiver of message
+     * @param key message key
+     * @param placeholders placeholders
+     */
+
+    public void sendMessage(final CommandSender sender, final String key, final Map<String, String> placeholders) {
+           final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+           final Component component = this.parse(message);
+           this.adventure.sender(sender).sendMessage(component);
+    }
+
+    /**
+     *
+     * @param sender receiver of message
      * @param key message key
      */
 
     public void sendMessage(final CommandSender sender, final String key) {
-           final String message = this.getMessage(key);
-           final Component component = this.parse(message);
-           this.adventure.sender(sender).sendMessage(component);
+        this.sendMessage(sender, key, Collections.emptyMap());
+    }
+
+    /**
+     *
+     * @param player receiver of message
+     * @param key message key
+     * @param placeholders placeholders
+     */
+
+    public void sendActionBar(final Player player, final String key, final Map<String, String> placeholders) {
+        final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+        Component component = this.parse(message);
+        this.adventure.player(player).sendActionBar(component);
+    }
+
+    /**
+     *
+     * @param player receiver of message
+     * @param key message key
+     */
+
+    public void sendActionBar(final Player player, final String key) {
+        this.sendActionBar(player, key);
+    }
+
+    /**
+     *
+     * @param player receiver of message
+     * @param key message key
+     * @param placeholders placeholders
+     */
+
+    public void sendTitle(final Player player, final String key, final Map<String, String> placeholders) {
+        final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+        Component component = this.parse(message);
+        this.adventure.player(player).showTitle(Title.title(component, Component.empty()));
+    }
+
+    /**
+     *
+     * @param player receiver of message
+     * @param key message key
+     */
+
+    public void sendTitle(final Player player, final String key) {
+        this.sendTitle(player, key, Collections.emptyMap());
     }
 
     /**
@@ -118,8 +178,23 @@ public class MessageHandler {
     }
 
     /**
+     *
+     * @param message message being translated
+     * @param placeHolders placeholders applied
+     * @return message with placeholders applied
+     */
+
+    public String applyPlaceholders(String message, final Map<String, String> placeHolders) {
+        for (final Map.Entry<String, String> entry : placeHolders.entrySet()) {
+            message = message.replace(entry.getKey(), entry.getValue());
+        }
+        return message;
+    }
+
+    /**
      * Loads all messages from messages.yml
      */
+
     private void load() {
         final String fileName = "messages.yml";
         final File file = FileUtil.getFile(fileName);
