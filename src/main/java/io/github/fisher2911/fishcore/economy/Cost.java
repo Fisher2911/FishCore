@@ -24,19 +24,25 @@
 
 package io.github.fisher2911.fishcore.economy;
 
+import io.github.fisher2911.fishcore.message.MessageHandler;
+import io.github.fisher2911.fishcore.message.Messages;
+import io.github.fisher2911.fishcore.user.BaseUser;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 public class Cost {
 
     private final double moneyCost;
-    private final Set<ItemStack> itemStackCost;
+    private final List<ItemStack> itemStackCost;
 
-    public Cost(final double moneyCost, final Set<ItemStack> itemStackCost) {
+    public Cost(final double moneyCost, final List<ItemStack> itemStackCost) {
         this.moneyCost = moneyCost;
-        this.itemStackCost = Collections.unmodifiableSet(itemStackCost);
+        this.itemStackCost = Collections.unmodifiableList(itemStackCost);
     }
 
     /**
@@ -50,10 +56,47 @@ public class Cost {
 
     /**
      *
-     * @return UnmodifiableSet of ItemStack costs
+     * @return UnmodifiableList of ItemStack costs
      */
 
-    public Set<ItemStack> getItemStackCost() {
-        return itemStackCost;
+
+    public boolean hasEnough(final Inventory inventory, final double balance) {
+        return this.hasEnoughMoney(balance) && this.hasEnoughItems(inventory);
+    }
+
+    public boolean hasEnough(final List<ItemStack> itemStacks, final float balance) {
+        return this.hasEnoughMoney(balance) && this.hasEnoughItems(itemStacks);
+    }
+
+    public boolean hasEnoughMoney(final double balance) {
+        return balance >= this.moneyCost;
+    }
+
+    public boolean hasEnoughItems(final List<ItemStack> itemStacks) {
+        return itemStacks.containsAll(this.itemStackCost);
+    }
+
+    public boolean hasEnoughItems(final Inventory inventory) {
+        return this.hasEnoughItems(Arrays.asList(inventory.getStorageContents()));
+    }
+
+    public boolean pay(final BaseUser user) {
+        final MessageHandler messageHandler = MessageHandler.getInstance();
+        final Player player = user.getPlayer();
+        if (player == null) {
+            return false;
+        }
+        final Inventory inventory = player.getInventory();
+        if (!hasEnoughItems(inventory)) {
+            messageHandler.sendMessage(player, Messages.NOT_ENOUGH_ITEMS);
+            return false;
+        }
+        if (!hasEnough(inventory, user.getMoney())) {
+            messageHandler.sendMessage(player, Messages.NOT_ENOUGH_MONEY);
+            return false;
+        }
+        inventory.removeItem(this.itemStackCost.toArray(new ItemStack[0]));
+        user.subtractMoney(this.moneyCost);
+        return true;
     }
 }

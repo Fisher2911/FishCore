@@ -95,7 +95,7 @@ public class MessageHandler {
      * @param placeholders placeholders
      */
 
-    public void sendMessage(final CommandSender sender, final String key, final Map<String, String> placeholders) {
+    public void sendMessage(final CommandSender sender, final Message key, final Map<String, String> placeholders) {
            final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
            final Component component = this.parse(message);
            this.adventure.sender(sender).sendMessage(component);
@@ -107,7 +107,7 @@ public class MessageHandler {
      * @param key message key
      */
 
-    public void sendMessage(final CommandSender sender, final String key) {
+    public void sendMessage(final CommandSender sender, final Message key) {
         this.sendMessage(sender, key, Collections.emptyMap());
     }
 
@@ -118,7 +118,7 @@ public class MessageHandler {
      * @param placeholders placeholders
      */
 
-    public void sendActionBar(final Player player, final String key, final Map<String, String> placeholders) {
+    public void sendActionBar(final Player player, final Message key, final Map<String, String> placeholders) {
         final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
         Component component = this.parse(message);
         this.adventure.player(player).sendActionBar(component);
@@ -130,7 +130,7 @@ public class MessageHandler {
      * @param key message key
      */
 
-    public void sendActionBar(final Player player, final String key) {
+    public void sendActionBar(final Player player, final Message key) {
         this.sendActionBar(player, key);
     }
 
@@ -141,7 +141,7 @@ public class MessageHandler {
      * @param placeholders placeholders
      */
 
-    public void sendTitle(final Player player, final String key, final Map<String, String> placeholders) {
+    public void sendTitle(final Player player, final Message key, final Map<String, String> placeholders) {
         final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
         Component component = this.parse(message);
         this.adventure.player(player).showTitle(Title.title(component, Component.empty()));
@@ -153,7 +153,7 @@ public class MessageHandler {
      * @param key message key
      */
 
-    public void sendTitle(final Player player, final String key) {
+    public void sendTitle(final Player player, final Message key) {
         this.sendTitle(player, key, Collections.emptyMap());
     }
 
@@ -173,7 +173,7 @@ public class MessageHandler {
      * @return message, or empty string if message not found
      */
 
-    public String getMessage(final String key) {
+    public String getMessage(final Message key) {
         return this.messageMap.getOrDefault(key, "");
     }
 

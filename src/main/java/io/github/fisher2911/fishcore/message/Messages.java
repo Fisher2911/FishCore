@@ -22,45 +22,23 @@
  * SOFTWARE.
  */
 
-package io.github.fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.message;
 
-import io.github.fisher2911.fishcore.util.helper.IdHolder;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+public class Messages {
 
-import java.util.UUID;
+    public static final Message NOT_ENOUGH_ITEMS = new Message("not-enough-items",
+            "You do not have enough items");
+    public static final Message NOT_ENOUGH_MONEY = new Message("not-enough-money",
+            "You do not have enough money");
 
-public abstract class BaseUser implements IdHolder<UUID> {
+    public static final Message INVALID_ITEM = new Message("",
+            "<red>" + Placeholder.ITEM + " is an invalid " +
+                    Placeholder.TYPE + " in " + Placeholder.FILE + "</red>");
+    public static final Message ITEM_NOT_FOUND = new Message("",
+            "<red>" + Placeholder.TYPE + " could not be found " +
+                    " in " + Placeholder.FILE + "</red>");
+    public static final Message NOT_A_NUMBER = new Message("",
+            "<red>" + Placeholder.ITEM + " is not a valid number " +
+                    " in " + Placeholder.FILE + "</red>");
 
-    protected final UUID uuid;
-    protected String name;
-
-    public BaseUser(final UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    @Override
-    public UUID getId() {
-        return uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getOfflinePlayer(this.uuid);
-    }
-
-    public @Nullable Player getPlayer() {
-        return Bukkit.getPlayer(this.uuid);
-    }
-
-    public abstract double getMoney();
-
-    public abstract void subtractMoney(final double money);
-
-    public abstract void addMoney(final double money);
 }

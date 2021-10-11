@@ -22,45 +22,13 @@
  * SOFTWARE.
  */
 
-package io.github.fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.message;
 
-import io.github.fisher2911.fishcore.util.helper.IdHolder;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+public class Placeholder {
 
-import java.util.UUID;
+    public static final String PREFIX = "%prefix%";
+    public static final String TYPE = "%type%";
+    public static final String ITEM = "%item%";
+    public static final String FILE = "%file%";
 
-public abstract class BaseUser implements IdHolder<UUID> {
-
-    protected final UUID uuid;
-    protected String name;
-
-    public BaseUser(final UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    @Override
-    public UUID getId() {
-        return uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getOfflinePlayer(this.uuid);
-    }
-
-    public @Nullable Player getPlayer() {
-        return Bukkit.getPlayer(this.uuid);
-    }
-
-    public abstract double getMoney();
-
-    public abstract void subtractMoney(final double money);
-
-    public abstract void addMoney(final double money);
 }
