@@ -28,9 +28,11 @@ import io.github.fisher2911.fishcore.FishCore;
 import io.github.fisher2911.fishcore.logger.Logger;
 import io.github.fisher2911.fishcore.message.ErrorMessages;
 import io.github.fisher2911.fishcore.util.builder.ItemBuilder;
+import io.github.fisher2911.fishcore.util.builder.LeatherArmorBuilder;
 import io.github.fisher2911.fishcore.util.builder.SkullBuilder;
 import io.github.fisher2911.fishcore.util.helper.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -118,6 +120,12 @@ public class FileUtil {
             } else if (ownerName != null) {
                 final OfflinePlayer player = Bukkit.getOfflinePlayer(ownerName);
                 ((SkullBuilder) itemBuilder).owner(player);
+            }
+        } else if (LeatherArmorBuilder.isLeatherArmor(material)) {
+            itemBuilder = LeatherArmorBuilder.from(material);
+            final Color color = section.getColor("color");
+            if (color != null) {
+                ((LeatherArmorBuilder) itemBuilder).color(color);
             }
         } else {
             itemBuilder = ItemBuilder.from(material);

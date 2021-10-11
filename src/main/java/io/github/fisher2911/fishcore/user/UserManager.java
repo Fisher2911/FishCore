@@ -24,15 +24,13 @@
 
 package io.github.fisher2911.fishcore.user;
 
-import io.github.fisher2911.fishcore.FishCore;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserManager<T extends BaseUser, R extends FishCore> {
+public class UserManager<T extends BaseUser> {
 
     private final Map<UUID, T> userMap = new HashMap<>();
 
