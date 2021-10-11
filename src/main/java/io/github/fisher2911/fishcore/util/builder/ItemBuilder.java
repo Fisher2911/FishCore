@@ -173,7 +173,7 @@ public class ItemBuilder {
      */
 
     public ItemStack build() {
-        final ItemStack itemStack = new ItemStack(this.material, this.amount);
+        final ItemStack itemStack = new ItemStack(this.material, Math.max(this.amount, 1));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
