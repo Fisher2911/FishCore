@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.util.helper;
+package io.github.fisher2911.fishcore.util.helper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

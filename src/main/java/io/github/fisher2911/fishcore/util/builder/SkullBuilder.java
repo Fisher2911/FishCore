@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.util.builder;
+package io.github.fisher2911.fishcore.util.builder;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;

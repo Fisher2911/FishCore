@@ -22,36 +22,38 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.logger;
+package io.github.fisher2911.fishcore.economy;
 
-import io.github.Fisher2911.fishcore.FishCore;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.logging.Level;
+import java.util.Collections;
+import java.util.Set;
 
-public class Logger {
+public class Cost {
 
-    private final FishCore plugin;
-    private final java.util.logging.Logger logger;
+    private final double moneyCost;
+    private final Set<ItemStack> itemStackCost;
 
-    public Logger(final FishCore plugin) {
-        this.plugin = plugin;
-        this.logger = this.plugin.getLogger();
+    public Cost(final double moneyCost, final Set<ItemStack> itemStackCost) {
+        this.moneyCost = moneyCost;
+        this.itemStackCost = Collections.unmodifiableSet(itemStackCost);
     }
 
-    public void info(final String info) {
-        this.logger.info(info);
+    /**
+     *
+     * @return money cost
+     */
+
+    public double getMoneyCost() {
+        return moneyCost;
     }
 
-    public void warn(final String warning) {
-        this.logger.warning(warning);
-    }
+    /**
+     *
+     * @return UnmodifiableSet of ItemStack costs
+     */
 
-    public void error(final String error) {
-        this.logger.severe(error);
+    public Set<ItemStack> getItemStackCost() {
+        return itemStackCost;
     }
-
-    public void configWarning(final String warning) {
-        this.logger.log(Level.CONFIG, warning);
-    }
-
 }

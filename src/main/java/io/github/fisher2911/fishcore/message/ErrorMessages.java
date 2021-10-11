@@ -22,38 +22,11 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.economy;
+package io.github.fisher2911.fishcore.message;
 
-import org.bukkit.inventory.ItemStack;
+public class ErrorMessages {
 
-import java.util.Collections;
-import java.util.Set;
+    public static final String INVALID_ITEM = "%s is not a valid %s in file %s";
+    public static final String ITEM_NOT_FOUND = "%s was not found in file %s";
 
-public class Cost {
-
-    private final double moneyCost;
-    private final Set<ItemStack> itemStackCost;
-
-    public Cost(final double moneyCost, final Set<ItemStack> itemStackCost) {
-        this.moneyCost = moneyCost;
-        this.itemStackCost = Collections.unmodifiableSet(itemStackCost);
-    }
-
-    /**
-     *
-     * @return money cost
-     */
-
-    public double getMoneyCost() {
-        return moneyCost;
-    }
-
-    /**
-     *
-     * @return UnmodifiableSet of ItemStack costs
-     */
-
-    public Set<ItemStack> getItemStackCost() {
-        return itemStackCost;
-    }
 }

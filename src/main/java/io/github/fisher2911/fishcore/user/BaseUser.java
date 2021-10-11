@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.user;
 
 import java.util.UUID;
 

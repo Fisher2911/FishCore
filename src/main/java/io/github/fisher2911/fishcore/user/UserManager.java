@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.user;
+
+import io.github.fisher2911.fishcore.FishCore;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,10 +32,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserManager<T extends BaseUser> {
+public class UserManager<T extends BaseUser, R extends FishCore> {
 
     private final Map<UUID, T> userMap = new HashMap<>();
-
 
     /**
      *

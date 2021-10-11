@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.upgrade;
+package io.github.fisher2911.fishcore.upgrade;
 
-import io.github.Fisher2911.fishcore.economy.Cost;
+import io.github.fisher2911.fishcore.economy.Cost;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

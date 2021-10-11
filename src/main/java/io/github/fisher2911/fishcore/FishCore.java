@@ -22,7 +22,35 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.database;
+package io.github.fisher2911.fishcore;
 
-public class DatabaseFactory {
+import io.github.fisher2911.fishcore.logger.Logger;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class FishCore extends JavaPlugin {
+
+    private Logger logger;
+
+    @Override
+    public void onEnable() {
+        this.initClasses();
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+
+    private void initClasses() {
+        this.logger = new Logger(this);
+    }
+
+    public Logger logger() {
+        return this.logger;
+    }
+
+    public void registerListener(final Listener listener) {
+        this.getServer().getPluginManager().registerEvents(listener, this);
+    }
 }

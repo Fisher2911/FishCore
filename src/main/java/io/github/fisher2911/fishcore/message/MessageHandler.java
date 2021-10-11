@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package io.github.Fisher2911.fishcore.message;
+package io.github.fisher2911.fishcore.message;
 
-import io.github.Fisher2911.fishcore.FishCore;
-import io.github.Fisher2911.fishcore.logger.Logger;
-import io.github.Fisher2911.fishcore.util.FileUtil;
-import io.github.Fisher2911.fishcore.util.helper.Utils;
+import io.github.fisher2911.fishcore.FishCore;
+import io.github.fisher2911.fishcore.logger.Logger;
+import io.github.fisher2911.fishcore.util.FileUtil;
+import io.github.fisher2911.fishcore.util.helper.Utils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
