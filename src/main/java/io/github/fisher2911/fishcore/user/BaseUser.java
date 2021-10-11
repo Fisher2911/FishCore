@@ -24,9 +24,11 @@
 
 package io.github.fisher2911.fishcore.user;
 
+import io.github.fisher2911.fishcore.util.helper.IdHolder;
+
 import java.util.UUID;
 
-public abstract class BaseUser {
+public abstract class BaseUser implements IdHolder<UUID> {
 
     protected final UUID uuid;
     protected String name;
@@ -35,7 +37,8 @@ public abstract class BaseUser {
         this.uuid = uuid;
     }
 
-    public UUID getUuid() {
+    @Override
+    public UUID getId() {
         return uuid;
     }
 

@@ -22,12 +22,10 @@
  * SOFTWARE.
  */
 
-package io.github.fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.util.helper;
 
-import io.github.fisher2911.fishcore.manager.Manager;
+public interface IdHolder<T> {
 
-import java.util.UUID;
-
-public class UserManager<V extends BaseUser> extends Manager<UUID, V> {
+    T getId();
 
 }

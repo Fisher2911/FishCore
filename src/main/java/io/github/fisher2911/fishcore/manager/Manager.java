@@ -22,12 +22,57 @@
  * SOFTWARE.
  */
 
-package io.github.fisher2911.fishcore.user;
+package io.github.fisher2911.fishcore.manager;
 
-import io.github.fisher2911.fishcore.manager.Manager;
+import io.github.fisher2911.fishcore.util.helper.IdHolder;
 
-import java.util.UUID;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-public class UserManager<V extends BaseUser> extends Manager<UUID, V> {
+public class Manager<K, V extends IdHolder<K>> {
 
+    private final Map<K, V> userMap = new HashMap<>();
+
+    public Manager() {}
+
+    /**
+     *
+     * @param value value being inserted
+     */
+
+    public void add(final V value) {
+        this.userMap.put(value.getId(), value);
+    }
+
+    /**
+     *
+     * @param key key of value being removed
+     * @return Optional of value if it exists
+     */
+
+    public Optional<V> remove(final K key) {
+        return Optional.ofNullable(this.userMap.remove(key));
+    }
+
+    /**
+     *
+     * @param key key of value being retrieved
+     * @return Optional of value if it exists
+     */
+
+    public Optional<V> get(final K key) {
+        return Optional.ofNullable(this.userMap.get(key));
+    }
+
+    /**
+     *
+     * @return Collection of all values
+     */
+
+    public Collection<V> getAll() {
+        return this.userMap.values();
+    }
+    
 }
