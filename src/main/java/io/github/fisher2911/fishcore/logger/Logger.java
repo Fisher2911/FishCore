@@ -26,6 +26,7 @@ package io.github.fisher2911.fishcore.logger;
 
 import io.github.fisher2911.fishcore.FishCore;
 
+import java.util.Map;
 import java.util.logging.Level;
 
 public class Logger {
@@ -42,12 +43,31 @@ public class Logger {
         this.logger.info(info);
     }
 
+    public void info(final String info, final Map<String, String> placeholders) {
+        this.info(this.applyPlaceholders(info, placeholders));
+    }
+
     public void warn(final String warning) {
         this.logger.warning(warning);
     }
 
+    public void warn(final String warning, final Map<String, String> placeholders) {
+        this.warn(this.applyPlaceholders(warning, placeholders));
+    }
+
     public void error(final String error) {
         this.logger.severe(error);
+    }
+
+    public void error(final String error, final Map<String, String> placeholders) {
+        this.error(this.applyPlaceholders(error, placeholders));
+    }
+
+    private String applyPlaceholders(String message, final Map<String, String> placeholders) {
+        for (final Map.Entry<String, String> entry : placeholders.entrySet()) {
+            message = message.replace(entry.getKey(), entry.getValue());
+        }
+        return message;
     }
 
     public void configWarning(final String warning) {
