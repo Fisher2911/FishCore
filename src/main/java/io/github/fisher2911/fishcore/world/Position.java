@@ -29,7 +29,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public class Position {
      * @param pitch pitch
      */
 
-    public Position(final @NotNull World world,
+    public Position(final World world,
                     final double x,
                     final double y,
                     final double z,
@@ -64,6 +63,20 @@ public class Position {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    /**
+     * @param world {@link org.bukkit.World}
+     * @param x     x coordinate
+     * @param y     y coordinate
+     * @param z     z coordinate
+     */
+
+    public Position(final World world,
+                    final double x,
+                    final double y,
+                    final double z) {
+        this(world, x, y, z, 0, 0);
     }
 
     /**
@@ -101,20 +114,6 @@ public class Position {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
-    }
-
-    /**
-     * @param world {@link org.bukkit.World}
-     * @param x     x coordinate
-     * @param y     y coordinate
-     * @param z     z coordinate
-     */
-
-    public Position(final @NotNull World world,
-                    final double x,
-                    final double y,
-                    final double z) {
-        this(world, x, y, z, 0, 0);
     }
 
     /**
@@ -164,12 +163,10 @@ public class Position {
      * {@link org.bukkit.Location}
      */
 
-    public @Nullable Location toBukkitLocation() {
+    public Location toBukkitLocation() {
         final Optional<World> optionalWorld = this.getWorld();
-        if (optionalWorld.isEmpty()) {
-            return null;
-        }
-        return new Location(optionalWorld.get(), this.x, this.y, this.z, this.yaw, this.pitch);
+        return new Location(optionalWorld.isEmpty() ? null : optionalWorld.get(),
+                this.x, this.y, this.z, this.yaw, this.pitch);
     }
 
     /**
@@ -229,22 +226,16 @@ public class Position {
      */
 
     public Position subtract(final double x, final double y, final double z) {
-        return this.subtract(x, y, z);
+        return this.subtract(x, y, z, 0, 0);
     }
 
     /**
      *
      * @param material material to be set
-     * @return true if material was set, false if not
      */
 
-    public boolean setBlockType(final Material material) {
-        final Location location = this.toBukkitLocation();
-        if (location == null) {
-            return false;
-        }
-        location.getBlock().setType(material);
-        return true;
+    public void setBlockType(final Material material) {
+        this.toBukkitLocation().getBlock().setType(material);
     }
 
     /**
@@ -252,27 +243,19 @@ public class Position {
      * @return block at position
      */
 
-    public @Nullable Block getBlock() {
-        final Location location = this.toBukkitLocation();
-        if (location == null) {
-            return null;
-        }
-        return location.getBlock();
+    public Block getBlock() {
+        return this.toBukkitLocation().getBlock();
     }
 
     /**
      *
      * @param location {@link org.bukkit.Location}
-     * @return {@link io.github.fisher2911.fishcore.world.Position},
-     * or null if the {@link org.bukkit.Location}'s world is null
+     * @return {@link io.github.fisher2911.fishcore.world.Position}
      */
 
-    public static @Nullable Position fromBukkitLocation(final Location location) {
+    public static Position fromBukkitLocation(final Location location) {
         final World world = location.getWorld();
-        if (world == null) {
-            return null;
-        }
-        return new Position(location.getWorld(),
+        return new Position(new WeakReference<>(world),
                 location.getX(),
                 location.getZ(),
                 location.getY(),
