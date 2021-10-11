@@ -50,7 +50,7 @@ public class MessageHandler {
     private final Logger logger;
     private final BukkitAudiences adventure;
     private static MessageHandler instance;
-    private final Map<String, String> messageMap = new HashMap<>();
+    private final Map<Message, String> messageMap = new HashMap<>();
 
     private MessageHandler(final FishCore plugin) {
         this.plugin = plugin;
@@ -207,7 +207,12 @@ public class MessageHandler {
                 }
             });
 
-            this.messageMap.put(key, message);
+            final Message.Type messageType = Utils.stringToEnum(
+                    Utils.replaceIfNull(config.getString("type"), "")
+                    , Message.Type.class, Message.Type.MESSAGE
+            );
+
+            this.messageMap.put(new Message(key, message, messageType), message);
         }
     }
 }
