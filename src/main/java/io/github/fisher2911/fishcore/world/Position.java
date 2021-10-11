@@ -257,8 +257,8 @@ public class Position {
         final World world = location.getWorld();
         return new Position(new WeakReference<>(world),
                 location.getX(),
-                location.getZ(),
                 location.getY(),
+                location.getZ(),
                 location.getYaw(),
                 location.getPitch());
     }
