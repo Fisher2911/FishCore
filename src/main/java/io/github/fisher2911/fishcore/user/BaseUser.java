@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public abstract class BaseUser implements IdHolder<UUID> {
 
@@ -56,6 +57,14 @@ public abstract class BaseUser implements IdHolder<UUID> {
 
     public @Nullable Player getPlayer() {
         return Bukkit.getPlayer(this.uuid);
+    }
+
+    public void ifOnline(final Consumer<Player> consumer) {
+        final Player player = this.getPlayer();
+        if (player == null) {
+            return;
+        }
+        consumer.accept(player);
     }
 
     public abstract double getMoney();
