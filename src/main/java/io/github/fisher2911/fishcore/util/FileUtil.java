@@ -27,6 +27,7 @@ package io.github.fisher2911.fishcore.util;
 import io.github.fisher2911.fishcore.FishCore;
 import io.github.fisher2911.fishcore.logger.Logger;
 import io.github.fisher2911.fishcore.message.ErrorMessages;
+import io.github.fisher2911.fishcore.message.MessageHandler;
 import io.github.fisher2911.fishcore.util.builder.ItemBuilder;
 import io.github.fisher2911.fishcore.util.builder.LeatherArmorBuilder;
 import io.github.fisher2911.fishcore.util.builder.SkullBuilder;
@@ -73,6 +74,7 @@ public class FileUtil {
      */
 
     public static ItemStack loadItemStack(final ConfigurationSection section, final String fileName) {
+        final MessageHandler messageHandler = MessageHandler.getInstance();
         final Logger logger = plugin.logger();
 
         final Material material = Utils.stringToEnum(
@@ -84,13 +86,17 @@ public class FileUtil {
 
         int amount = Math.max(section.getInt("amount"), 1);
 
-        final String name = Utils.replaceIfNull(section.getString("name"), "");
+        final String name = messageHandler.parseStringToString(
+                Utils.replaceIfNull(section.getString("name"), "")
+        );
 
         final boolean unbreakable = section.getBoolean("unbreakable");
 
         final boolean glowing = section.getBoolean("glowing");
 
-        final List<String> lore = section.getStringList("lore");
+        final List<String> lore = section.getStringList("lore").
+                stream().map(messageHandler::parseStringToString).
+                collect(Collectors.toList());
 
         final int modelData = section.getInt("model-data");
 

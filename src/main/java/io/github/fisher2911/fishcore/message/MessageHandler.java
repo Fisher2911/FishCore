@@ -33,6 +33,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -45,6 +46,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageHandler {
+
+    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.builder()
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
 
     private final FishCore plugin;
     private final Logger logger;
@@ -165,6 +171,10 @@ public class MessageHandler {
 
     public Component parse(final String parsed) {
         return this.miniMessage.parse(parsed);
+    }
+
+    public String parseStringToString(final String parsed) {
+        return SERIALIZER.serialize(this.miniMessage.parse(parsed));
     }
 
     /**
