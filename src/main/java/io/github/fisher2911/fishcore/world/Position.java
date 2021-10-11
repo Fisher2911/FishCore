@@ -89,23 +89,35 @@ public class Position {
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public double getZ() {
-        return z;
+        return this.z;
     }
 
     public float getYaw() {
-        return yaw;
+        return this.yaw;
     }
 
     public float getPitch() {
-        return pitch;
+        return this.pitch;
+    }
+
+    public int getBlockX() {
+        return Location.locToBlock(this.x);
+    }
+
+    public int getBlockY() {
+        return Location.locToBlock(this.y);
+    }
+
+    public int getBlockZ() {
+        return Location.locToBlock(this.z);
     }
 
 
@@ -141,4 +153,11 @@ public class Position {
                 location.getYaw(),
                 location.getPitch());
     }
+
+    public long getChunkKey() {
+        long x = (this.getBlockX() >> 4);
+        long z = (this.getBlockZ() >> 4);
+        return x & 0xffffffffL | (z & 0xffffffffL) << 32;
+    }
+
 }
