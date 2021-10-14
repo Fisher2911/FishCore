@@ -24,18 +24,20 @@
 
 package io.github.fisher2911.fishcore.world;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.ref.WeakReference;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Position {
 
-    private final WeakReference<World> worldReference;
+    private final UUID world;
     private final double x;
     private final double y;
     private final double z;
@@ -57,7 +59,7 @@ public class Position {
                     final double z,
                     final float yaw,
                     final float pitch) {
-        this.worldReference = new WeakReference<>(world);
+        this.world = world.getUID();
         this.x = x;
         this.y = y;
         this.z = z;
@@ -80,21 +82,21 @@ public class Position {
     }
 
     /**
-     * @param worldReference WeakReference of {@link org.bukkit.World}
+     * @param world UUID of {@link org.bukkit.World}
      * @param x     x coordinate
      * @param y     y coordinate
      * @param z     z coordinate
      */
 
-    public Position(final @NotNull WeakReference<World> worldReference,
+    public Position(final @NotNull UUID world,
                     final double x,
                     final double y,
                     final double z) {
-        this(worldReference, x, y, z, 0, 0);
+        this(world, x, y, z, 0, 0);
     }
 
     /**
-     * @param worldReference WeakReference of {@link org.bukkit.World}
+     * @param world UUID of {@link org.bukkit.World}
      * @param x     x coordinate
      * @param y     y coordinate
      * @param z     z coordinate
@@ -102,13 +104,13 @@ public class Position {
      * @param pitch pitch
      */
 
-    public Position(final @NotNull WeakReference<World> worldReference,
+    public Position(final @NotNull UUID world,
                     final double x,
                     final double y,
                     final double z,
                     final float yaw,
                     final float pitch) {
-        this.worldReference = worldReference;
+        this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -122,7 +124,7 @@ public class Position {
      */
 
     public Optional<World> getWorld() {
-        return Optional.ofNullable(this.worldReference.get());
+        return Optional.ofNullable(Bukkit.getWorld(this.world));
     }
 
     public double getX() {
@@ -180,7 +182,7 @@ public class Position {
      */
 
     public Position add(final double x, final double y, final double z, final float yaw, final float pitch) {
-        return new Position(worldReference, this.x + x,
+        return new Position(this.world, this.x + x,
                 this.y + y,
                 this.z + z,
                 this.yaw + yaw,
@@ -210,7 +212,7 @@ public class Position {
      */
 
     public Position subtract(final double x, final double y, final double z, final float yaw, final float pitch) {
-        return new Position(worldReference, this.x - x,
+        return new Position(this.world, this.x - x,
                 this.y - y,
                 this.z - z,
                 this.yaw - yaw,
@@ -255,7 +257,7 @@ public class Position {
 
     public static Position fromBukkitLocation(final Location location) {
         final World world = location.getWorld();
-        return new Position(new WeakReference<>(world),
+        return new Position(world.getUID(),
                 location.getX(),
                 location.getY(),
                 location.getZ(),
@@ -274,4 +276,16 @@ public class Position {
         return x & 0xffffffffL | (z & 0xffffffffL) << 32;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Position position = (Position) o;
+        return Double.compare(position.x, x) == 0 && Double.compare(position.y, y) == 0 && Double.compare(position.z, z) == 0 && Float.compare(position.yaw, yaw) == 0 && Float.compare(position.pitch, pitch) == 0 && Objects.equals(world, position.world);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(world, x, y, z, yaw, pitch);
+    }
 }
