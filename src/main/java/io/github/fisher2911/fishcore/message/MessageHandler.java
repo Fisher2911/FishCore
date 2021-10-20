@@ -184,7 +184,7 @@ public class MessageHandler {
      */
 
     public String getMessage(final Message key) {
-        return this.messageMap.getOrDefault(key, "");
+        return this.messageMap.getOrDefault(key, key.getMessage());
     }
 
     /**
