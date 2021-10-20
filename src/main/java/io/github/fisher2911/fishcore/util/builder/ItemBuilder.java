@@ -24,6 +24,7 @@
 
 package io.github.fisher2911.fishcore.util.builder;
 
+import io.github.fisher2911.fishcore.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -31,6 +32,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -104,12 +106,48 @@ public class ItemBuilder {
     }
 
     /**
+     * Sets placeholders to the item's name
+     * @param placeholders placeholders
+     */
+
+    public ItemBuilder namePlaceholders(final Map<String, String> placeholders) {
+        final String name = MessageHandler.getInstance().applyPlaceholders(this.itemMeta.getDisplayName(), placeholders);
+        this.itemMeta.setDisplayName(name);
+        return this;
+    }
+
+    /**
      *
      * @param lore ItemStack lore
      * @return this
      */
 
     public ItemBuilder lore(final List<String> lore) {
+        this.itemMeta.setLore(lore);
+        return this;
+    }
+
+    /**
+     * Sets placeholders to the item's lore
+     * @param placeholders placeholders
+     */
+
+
+    public ItemBuilder lorePlaceholders(final Map<String, String> placeholders) {
+        final List<String> lore = new ArrayList<>();
+
+        final List<String> previousLore = this.itemMeta.getLore();
+
+        if (previousLore == null) {
+            return this;
+        }
+
+        for (final String line : previousLore) {
+            lore.add(MessageHandler.getInstance().applyPlaceholders(
+                    line, placeholders
+            ));
+        }
+
         this.itemMeta.setLore(lore);
         return this;
     }
