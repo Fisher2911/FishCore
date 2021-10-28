@@ -36,10 +36,18 @@ import java.util.function.Consumer;
 public abstract class BaseUser implements IdHolder<UUID> {
 
     protected final UUID uuid;
-    protected String name;
+    protected double money;
+    protected final String name;
 
-    public BaseUser(final UUID uuid) {
+    public BaseUser(final UUID uuid, final String name) {
         this.uuid = uuid;
+        this.name = name;
+    }
+
+    public BaseUser(final UUID uuid, final double money, final String name) {
+        this.uuid = uuid;
+        this.money = money;
+        this.name = name;
     }
 
     @Override
@@ -65,5 +73,17 @@ public abstract class BaseUser implements IdHolder<UUID> {
             return;
         }
         consumer.accept(player);
+    }
+
+    public double getMoney() {
+        return this.money;
+    }
+
+    public void subtractMoney(final double money) {
+        this.money -= money;
+    }
+
+    public void addMoney(final double money) {
+        this.money += money;
     }
 }
