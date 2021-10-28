@@ -66,10 +66,4 @@ public abstract class BaseUser implements IdHolder<UUID> {
         }
         consumer.accept(player);
     }
-
-    public abstract double getMoney();
-
-    public abstract void subtractMoney(final double money);
-
-    public abstract void addMoney(final double money);
 }
