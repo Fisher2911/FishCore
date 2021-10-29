@@ -30,10 +30,6 @@ import io.github.fisher2911.fishcore.util.helper.StringUtils;
 import io.github.fisher2911.fishcore.util.helper.Utils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
-import net.kyori.adventure.text.minimessage.transformation.TransformationType;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,11 +43,6 @@ import java.util.Map;
 
 public class MessageHandler {
 
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.builder()
-            .hexColors()
-            .useUnusualXRepeatedCharacterHexFormat()
-            .build();
-
     private final FishCore plugin;
     private final Logger logger;
     private final BukkitAudiences adventure;
@@ -63,22 +54,14 @@ public class MessageHandler {
         this.adventure = BukkitAudiences.create(this.plugin);
     }
 
+
     /**
      * Closes adventure
      */
 
     public void close() {
-        this.adventure.close();
+        adventure.close();
     }
-
-    private static final MiniMessage miniMessage = MiniMessage.builder()
-            .transformations(TransformationRegistry.
-                    builder().
-                    add(TransformationType.CLICK_EVENT,
-                            TransformationType.DECORATION,
-                            TransformationType.COLOR
-                    ).build())
-            .build();
 
     /**
      *
@@ -89,7 +72,7 @@ public class MessageHandler {
 
     public void sendMessage(final CommandSender sender, final Message key, final Map<String, String> placeholders) {
            final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
-           final Component component = this.parse(message);
+           final Component component = Adventure.MINI_MESSAGE.parse(message);
            this.adventure.sender(sender).sendMessage(component);
     }
 
@@ -112,7 +95,7 @@ public class MessageHandler {
 
     public void sendActionBar(final Player player, final Message key, final Map<String, String> placeholders) {
         final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
-        Component component = this.parse(message);
+        Component component = Adventure.MINI_MESSAGE.parse(message);
         this.adventure.player(player).sendActionBar(component);
     }
 
@@ -135,7 +118,7 @@ public class MessageHandler {
 
     public void sendTitle(final Player player, final Message key, final Map<String, String> placeholders) {
         final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
-        Component component = this.parse(message);
+        Component component = Adventure.MINI_MESSAGE.parse(message);
         this.adventure.player(player).showTitle(Title.title(component, Component.empty()));
     }
 
@@ -147,20 +130,6 @@ public class MessageHandler {
 
     public void sendTitle(final Player player, final Message key) {
         this.sendTitle(player, key, Collections.emptyMap());
-    }
-
-    /**
-     *
-     * @param parsed message to be parsed
-     * @return MiniMessage parsed string
-     */
-
-    public Component parse(final String parsed) {
-        return miniMessage.parse(parsed);
-    }
-
-    public static String parseStringToString(final String parsed) {
-        return SERIALIZER.serialize(miniMessage.parse(parsed));
     }
 
     /**

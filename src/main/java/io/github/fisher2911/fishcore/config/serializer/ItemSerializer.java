@@ -1,9 +1,9 @@
 package io.github.fisher2911.fishcore.config.serializer;
 
-import io.github.fisher2911.fishcore.message.MessageHandler;
 import io.github.fisher2911.fishcore.util.builder.ItemBuilder;
 import io.github.fisher2911.fishcore.util.builder.LeatherArmorBuilder;
 import io.github.fisher2911.fishcore.util.builder.SkullBuilder;
+import io.github.fisher2911.fishcore.util.helper.StringUtils;
 import io.github.fisher2911.fishcore.util.helper.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -72,12 +72,12 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
         final Material material = Utils.stringToEnum(Utils.replaceIfNull(materialNode.getString(), ""),
                 Material.class, Material.AIR);
         final int amount = amountNode.getInt();
-        final String name = MessageHandler.parseStringToString(Utils.replaceIfNull(nameNode.getString(), ""));
+        final String name = StringUtils.parseStringToString(Utils.replaceIfNull(nameNode.getString(), ""));
 
         final boolean unbreakable = unbreakableNode.getBoolean();
         final boolean glowing = glowingNode.getBoolean();
         final List<String> lore = Utils.replaceIfNull(loreNode.getList(String.class), new ArrayList<String>()).
-                stream().map(MessageHandler::parseStringToString).collect(Collectors.toList());
+                stream().map(StringUtils::parseStringToString).collect(Collectors.toList());
         final int modelData = modelDataNode.getInt();
         final Set<ItemFlag> itemFlags = Utils.replaceIfNull(itemFlagsNode.getList(String.class), new ArrayList<String>()).
                 stream().map(flag -> {

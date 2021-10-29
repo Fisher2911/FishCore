@@ -22,41 +22,27 @@
  * SOFTWARE.
  */
 
-package io.github.fisher2911.fishcore.util.helper;
+package io.github.fisher2911.fishcore.message;
 
-import io.github.fisher2911.fishcore.message.Adventure;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
+import net.kyori.adventure.text.minimessage.transformation.TransformationType;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-import java.util.Map;
+public class Adventure {
 
-public class StringUtils {
+    public static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.builder()
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
 
-    /**
-     *
-     * @param message message being translated
-     * @param placeholders placeholders applied
-     * @return message with placeholders applied
-     */
+    public static final MiniMessage MINI_MESSAGE = MiniMessage.builder()
+            .transformations(TransformationRegistry.
+                    builder().
+                    add(TransformationType.CLICK_EVENT,
+                            TransformationType.DECORATION,
+                            TransformationType.COLOR
+                    ).build())
+            .build();
 
-    public static String applyPlaceholders(String message, final Map<String, String> placeholders) {
-        for (final Map.Entry<String, String> entry : placeholders.entrySet()) {
-            message = message.replace(entry.getKey(), entry.getValue());
-        }
-        return message;
-    }
-
-
-    /**
-     *
-     * @param parsed message to be parsed
-     * @return MiniMessage parsed string
-     */
-
-    public static Component parse(final String parsed) {
-        return Adventure.MINI_MESSAGE.parse(parsed);
-    }
-
-    public static String parseStringToString(final String parsed) {
-        return Adventure.SERIALIZER.serialize(Adventure.MINI_MESSAGE.parse(parsed));
-    }
 }
