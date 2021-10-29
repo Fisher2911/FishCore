@@ -24,7 +24,7 @@
 
 package io.github.fisher2911.fishcore.util.builder;
 
-import io.github.fisher2911.fishcore.message.MessageHandler;
+import io.github.fisher2911.fishcore.util.helper.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -111,7 +111,8 @@ public class ItemBuilder {
      */
 
     public ItemBuilder namePlaceholders(final Map<String, String> placeholders) {
-        final String name = MessageHandler.getInstance().applyPlaceholders(this.itemMeta.getDisplayName(), placeholders);
+        final String name = StringUtils.
+                applyPlaceholders(this.itemMeta.getDisplayName(), placeholders);
         this.itemMeta.setDisplayName(name);
         return this;
     }
@@ -143,7 +144,7 @@ public class ItemBuilder {
         }
 
         for (final String line : previousLore) {
-            lore.add(MessageHandler.getInstance().applyPlaceholders(
+            lore.add(StringUtils.applyPlaceholders(
                     line, placeholders
             ));
         }

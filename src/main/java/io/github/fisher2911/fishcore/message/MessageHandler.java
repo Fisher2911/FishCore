@@ -26,7 +26,7 @@ package io.github.fisher2911.fishcore.message;
 
 import io.github.fisher2911.fishcore.FishCore;
 import io.github.fisher2911.fishcore.logger.Logger;
-import io.github.fisher2911.fishcore.util.FileUtil;
+import io.github.fisher2911.fishcore.util.helper.StringUtils;
 import io.github.fisher2911.fishcore.util.helper.Utils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -71,7 +71,7 @@ public class MessageHandler {
         this.adventure.close();
     }
 
-    private final MiniMessage miniMessage = MiniMessage.builder()
+    private static final MiniMessage miniMessage = MiniMessage.builder()
             .transformations(TransformationRegistry.
                     builder().
                     add(TransformationType.CLICK_EVENT,
@@ -88,7 +88,7 @@ public class MessageHandler {
      */
 
     public void sendMessage(final CommandSender sender, final Message key, final Map<String, String> placeholders) {
-           final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+           final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
            final Component component = this.parse(message);
            this.adventure.sender(sender).sendMessage(component);
     }
@@ -111,7 +111,7 @@ public class MessageHandler {
      */
 
     public void sendActionBar(final Player player, final Message key, final Map<String, String> placeholders) {
-        final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+        final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
         Component component = this.parse(message);
         this.adventure.player(player).sendActionBar(component);
     }
@@ -134,7 +134,7 @@ public class MessageHandler {
      */
 
     public void sendTitle(final Player player, final Message key, final Map<String, String> placeholders) {
-        final String message = this.applyPlaceholders(this.getMessage(key), placeholders);
+        final String message = StringUtils.applyPlaceholders(this.getMessage(key), placeholders);
         Component component = this.parse(message);
         this.adventure.player(player).showTitle(Title.title(component, Component.empty()));
     }
@@ -156,11 +156,11 @@ public class MessageHandler {
      */
 
     public Component parse(final String parsed) {
-        return this.miniMessage.parse(parsed);
+        return miniMessage.parse(parsed);
     }
 
-    public String parseStringToString(final String parsed) {
-        return SERIALIZER.serialize(this.miniMessage.parse(parsed));
+    public static String parseStringToString(final String parsed) {
+        return SERIALIZER.serialize(miniMessage.parse(parsed));
     }
 
     /**
@@ -174,26 +174,13 @@ public class MessageHandler {
     }
 
     /**
-     *
-     * @param message message being translated
-     * @param placeHolders placeholders applied
-     * @return message with placeholders applied
-     */
-
-    public String applyPlaceholders(String message, final Map<String, String> placeHolders) {
-        for (final Map.Entry<String, String> entry : placeHolders.entrySet()) {
-            message = message.replace(entry.getKey(), entry.getValue());
-        }
-        return message;
-    }
-
-    /**
      * Loads all messages from messages.yml
      */
 
-    private void load() {
+    void load() {
         final String fileName = "messages.yml";
-        final File file = FileUtil.getFile(fileName);
+        this.plugin.saveResource(fileName, false);
+        final File file = new File(fileName);
         final FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         for (final String key : config.getKeys(false)) {

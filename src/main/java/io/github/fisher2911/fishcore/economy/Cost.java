@@ -24,7 +24,9 @@
 
 package io.github.fisher2911.fishcore.economy;
 
+import io.github.fisher2911.fishcore.FishCore;
 import io.github.fisher2911.fishcore.message.MessageHandler;
+import io.github.fisher2911.fishcore.message.MessageHandlerRegistry;
 import io.github.fisher2911.fishcore.message.Messages;
 import io.github.fisher2911.fishcore.user.BaseUser;
 import org.bukkit.entity.Player;
@@ -81,7 +83,7 @@ public class Cost {
     }
 
     public boolean pay(final BaseUser user) {
-        final MessageHandler messageHandler = MessageHandler.getInstance();
+        final MessageHandler messageHandler = MessageHandlerRegistry.REGISTRY.get(FishCore.class);
         final Player player = user.getPlayer();
         if (player == null) {
             return false;

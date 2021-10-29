@@ -55,7 +55,6 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
 
     @Override
     public ItemStack deserialize(final Type type, final ConfigurationNode source) throws SerializationException {
-        final MessageHandler messageHandler = MessageHandler.getInstance();
         final ConfigurationNode materialNode = this.nonVirtualNode(source, MATERIAL);
         final ConfigurationNode amountNode = source.node(AMOUNT);
         final ConfigurationNode nameNode = source.node(NAME);
@@ -73,12 +72,12 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
         final Material material = Utils.stringToEnum(Utils.replaceIfNull(materialNode.getString(), ""),
                 Material.class, Material.AIR);
         final int amount = amountNode.getInt();
-        final String name = messageHandler.parseStringToString(Utils.replaceIfNull(nameNode.getString(), ""));
+        final String name = MessageHandler.parseStringToString(Utils.replaceIfNull(nameNode.getString(), ""));
 
         final boolean unbreakable = unbreakableNode.getBoolean();
         final boolean glowing = glowingNode.getBoolean();
         final List<String> lore = Utils.replaceIfNull(loreNode.getList(String.class), new ArrayList<String>()).
-                stream().map(messageHandler::parseStringToString).collect(Collectors.toList());
+                stream().map(MessageHandler::parseStringToString).collect(Collectors.toList());
         final int modelData = modelDataNode.getInt();
         final Set<ItemFlag> itemFlags = Utils.replaceIfNull(itemFlagsNode.getList(String.class), new ArrayList<String>()).
                 stream().map(flag -> {
