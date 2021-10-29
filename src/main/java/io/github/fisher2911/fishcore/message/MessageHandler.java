@@ -55,26 +55,12 @@ public class MessageHandler {
     private final FishCore plugin;
     private final Logger logger;
     private final BukkitAudiences adventure;
-    private static MessageHandler instance;
     private final Map<Message, String> messageMap = new HashMap<>();
 
-    private MessageHandler(final FishCore plugin) {
+    public MessageHandler(final FishCore plugin) {
         this.plugin = plugin;
         this.logger = this.plugin.logger();
         this.adventure = BukkitAudiences.create(this.plugin);
-    }
-
-    /**
-     *
-     * @return instance of MessageHandler
-     */
-
-    public static MessageHandler getInstance() {
-        if (instance == null) {
-            instance = new MessageHandler(FishCore.getPlugin(FishCore.class));
-            instance.load();
-        }
-        return instance;
     }
 
     /**

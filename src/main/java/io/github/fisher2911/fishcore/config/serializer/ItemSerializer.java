@@ -75,8 +75,6 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
         final int amount = amountNode.getInt();
         final String name = messageHandler.parseStringToString(Utils.replaceIfNull(nameNode.getString(), ""));
 
-        Bukkit.getLogger().info("Loaded name: " + name + ":::" + nameNode.getString());
-
         final boolean unbreakable = unbreakableNode.getBoolean();
         final boolean glowing = glowingNode.getBoolean();
         final List<String> lore = Utils.replaceIfNull(loreNode.getList(String.class), new ArrayList<String>()).

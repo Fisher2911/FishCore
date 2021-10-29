@@ -24,19 +24,13 @@
 
 package io.github.fisher2911.fishcore.util;
 
-import io.github.fisher2911.fishcore.FishCore;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 public class FileUtil {
 
-    private static final FishCore plugin;
-
-    static {
-        plugin = FishCore.getPlugin(FishCore.class);
-    }
-
-    public static File getFile(final String name) {
+    public static File getFile(final String name, final JavaPlugin plugin) {
         final File file = new File(plugin.getDataFolder(), name);
         if (!file.exists()) {
             plugin.saveResource(name, false);
