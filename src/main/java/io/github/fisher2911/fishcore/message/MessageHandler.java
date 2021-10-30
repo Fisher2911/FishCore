@@ -46,7 +46,7 @@ public class MessageHandler {
     private final FishCore plugin;
     private final Logger logger;
     private final BukkitAudiences adventure;
-    private final Map<Message, String> messageMap = new HashMap<>();
+    private final Map<String, Message> messageMap = new HashMap<>();
 
     public MessageHandler(final FishCore plugin) {
         this.plugin = plugin;
@@ -106,7 +106,7 @@ public class MessageHandler {
      */
 
     public void sendActionBar(final Player player, final Message key) {
-        this.sendActionBar(player, key);
+        this.sendActionBar(player, key, Collections.emptyMap());
     }
 
     /**
@@ -139,7 +139,7 @@ public class MessageHandler {
      */
 
     public String getMessage(final Message key) {
-        return this.messageMap.getOrDefault(key, key.getMessage());
+        return this.messageMap.getOrDefault(key.getKey(), key).getMessage();
     }
 
     /**
@@ -149,10 +149,11 @@ public class MessageHandler {
     void load() {
         final String fileName = "messages.yml";
         this.plugin.saveResource(fileName, false);
-        final File file = new File(fileName);
+        final File file = new File(this.plugin.getDataFolder(), fileName);
         final FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         for (final String key : config.getKeys(false)) {
+
             final String message = Utils.replaceIfNull(config.getString(key), "", value -> {
                 if (value == null) {
                     this.logger.configWarning(String.format(ErrorMessages.ITEM_NOT_FOUND, "message", fileName));
@@ -164,7 +165,7 @@ public class MessageHandler {
                     , Message.Type.class, Message.Type.MESSAGE
             );
 
-            this.messageMap.put(new Message(key, message, messageType), message);
+            this.messageMap.put(key, new Message(key, message, messageType));
         }
     }
 }
