@@ -24,6 +24,7 @@
 
 plugins {
     id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
@@ -31,7 +32,7 @@ plugins {
 
 group = 'io.github.fisher2911'
 archivesBaseName = "FishCore"
-version = "0.2.9-SNAPSHOT"
+version = "0.3.0-SNAPSHOT"
 
 
 
@@ -53,12 +54,16 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     compileOnly 'org.jetbrains:annotations:22.0.0'
-    api 'co.aikar:taskchain-bukkit:3.7.2'
-    api 'net.kyori:adventure-api:4.9.2'
-    api 'net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT'
-    api 'net.kyori:adventure-platform-bukkit:4.0.0'
-    api 'net.kyori:adventure-text-serializer-legacy:4.9.2'
-    api 'org.spongepowered:configurate-yaml:4.1.2'
+    implementation 'net.kyori:adventure-api:4.9.2'
+    implementation 'net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT'
+    implementation 'net.kyori:adventure-platform-bukkit:4.0.0'
+    implementation 'net.kyori:adventure-text-serializer-legacy:4.9.2'
+    implementation 'org.spongepowered:configurate-yaml:4.1.2'
+}
+
+shadowJar {
+    relocate 'net.kyori.adventure', 'io.github.fisher2911.fishcore.adventure'
+    relocate 'org.spongepowered.configurate', 'io.github.fisher2911.fishcore.configurate'
 }
 
 java {
@@ -69,8 +74,7 @@ java {
 publishing {
     publications {
 
-        mavenJava(MavenPublication) {
-
+        shadow(MavenPublication) {
             groupId 'io.github.fisher2911'
             artifactId 'fish-core'
             version project.version
@@ -129,4 +133,9 @@ publishing {
     }
 }
 
-signing.sign publishing.publications.mavenJava
+shadowJar {
+    archiveBaseName.set("FishCore")
+    archiveClassifier.set("")
+}
+
+signing.sign publishing.publications.shadow
