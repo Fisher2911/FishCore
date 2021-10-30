@@ -32,7 +32,7 @@ plugins {
 
 group = 'io.github.fisher2911'
 archivesBaseName = "FishCore"
-version = "0.3.0-SNAPSHOT"
+version = "0.3.1-SNAPSHOT"
 
 
 

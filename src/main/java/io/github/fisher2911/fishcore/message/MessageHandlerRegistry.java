@@ -48,6 +48,7 @@ public class MessageHandlerRegistry {
         MessageHandler messageHandler = this.registry.get(plugin);
         if (messageHandler == null) {
             messageHandler = new MessageHandler(JavaPlugin.getPlugin(plugin));
+            messageHandler.load();
             this.registry.put(plugin, messageHandler);
         }
         return messageHandler;
