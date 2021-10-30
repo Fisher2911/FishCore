@@ -148,8 +148,13 @@ public class MessageHandler {
 
     void load() {
         final String fileName = "messages.yml";
-        this.plugin.saveResource(fileName, false);
+
         final File file = new File(this.plugin.getDataFolder(), fileName);
+
+        if (!file.exists()) {
+            this.plugin.saveResource(fileName, false);
+        }
+
         final FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         for (final String key : config.getKeys(false)) {
