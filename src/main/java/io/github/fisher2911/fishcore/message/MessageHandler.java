@@ -157,13 +157,19 @@ public class MessageHandler {
 
         final FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
+        String prefix = config.getString("prefix");
+
+        if (prefix == null) {
+            prefix = "";
+        }
+
         for (final String key : config.getKeys(false)) {
 
             final String message = Utils.replaceIfNull(config.getString(key), "", value -> {
                 if (value == null) {
                     this.logger.configWarning(String.format(ErrorMessages.ITEM_NOT_FOUND, "message", fileName));
                 }
-            });
+            }).replace(Placeholder.PREFIX, prefix);
 
             final Message.Type messageType = Utils.stringToEnum(
                     Utils.replaceIfNull(config.getString("type"), "")

@@ -26,8 +26,15 @@ package io.github.fisher2911.fishcore.user;
 
 import io.github.fisher2911.fishcore.manager.Manager;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class UserManager<V extends BaseUser> extends Manager<UUID, V> {
 
+    @Deprecated
+    public UserManager() {}
+
+    public UserManager(final Map<UUID, V> map) {
+        super(map);
+    }
 }

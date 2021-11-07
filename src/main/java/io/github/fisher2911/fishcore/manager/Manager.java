@@ -30,12 +30,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class Manager<K, V extends IdHolder<K>> {
 
-    private final Map<K, V> userMap = new HashMap<>();
+    private final Map<K, V> map;
 
-    public Manager() {}
+    @Deprecated
+    public Manager() {
+        this.map = new HashMap<>();
+    }
+
+    public Manager(final Map<K, V> map) {
+        this.map = map;
+    }
+
+
 
     /**
      *
@@ -43,7 +53,7 @@ public class Manager<K, V extends IdHolder<K>> {
      */
 
     public void add(final V value) {
-        this.userMap.put(value.getId(), value);
+        this.map.put(value.getId(), value);
     }
 
     /**
@@ -53,7 +63,7 @@ public class Manager<K, V extends IdHolder<K>> {
      */
 
     public Optional<V> remove(final K key) {
-        return Optional.ofNullable(this.userMap.remove(key));
+        return Optional.ofNullable(this.map.remove(key));
     }
 
     /**
@@ -63,16 +73,32 @@ public class Manager<K, V extends IdHolder<K>> {
      */
 
     public Optional<V> get(final K key) {
-        return Optional.ofNullable(this.userMap.get(key));
+        return Optional.ofNullable(this.map.get(key));
     }
 
     /**
-     *
+     * Use {@link Manager#getAllValues()}
      * @return Collection of all values
      */
 
+    @Deprecated
     public Collection<V> getAll() {
-        return this.userMap.values();
+        return this.map.values();
     }
-    
+
+    public Set<K> getAllKeys() {
+        return this.map.keySet();
+    }
+
+    public Collection<V> getAllValues() {
+        return this.map.values();
+    }
+
+    public Set<Map.Entry<K, V>> getEntries() {
+        return this.map.entrySet();
+    }
+
+    public Map<K, V> getMap() {
+        return this.map;
+    }
 }

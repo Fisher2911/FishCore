@@ -25,8 +25,14 @@
 package io.github.fisher2911.fishcore;
 
 import io.github.fisher2911.fishcore.logger.Logger;
+import io.github.fisher2911.fishcore.manager.Manager;
+import io.github.fisher2911.fishcore.user.BaseUser;
+import io.github.fisher2911.fishcore.user.UserManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class FishCore extends JavaPlugin {
 
