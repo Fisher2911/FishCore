@@ -74,6 +74,7 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
         if (!source.hasChild(path)) {
             throw new SerializationException("Required field " + Arrays.toString(path) + " was not present in node");
         }
+
         return source.node(path);
     }
 
